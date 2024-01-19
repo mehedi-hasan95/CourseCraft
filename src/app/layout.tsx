@@ -2,6 +2,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { Sidebar } from "@/components/common/sidebar";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +23,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ResizablePanelGroup
+          direction="horizontal"
+          className="min-h-[200px] rounded-lg border"
+        >
+          <ResizablePanel className="hidden md:block" defaultSize={25}>
+            <Sidebar />
+          </ResizablePanel>
+          <ResizableHandle className="hidden md:flex" withHandle />
+          <ResizablePanel defaultSize={75}>
+            <div className="flex h-full justify-center p-6">
+              <span className="font-semibold">{children}</span>
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </body>
     </html>
   );
 }
