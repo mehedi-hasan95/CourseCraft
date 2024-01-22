@@ -7,5 +7,5 @@ export const CurrentUser = async () => {
 
 export const CurrentUserRole = async () => {
   const session = await auth();
-  return session?.user.role;
+  return session?.user?.role;
 };

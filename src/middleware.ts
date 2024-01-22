@@ -7,15 +7,21 @@ import {
   authRoutes,
   apiAuthPrefix,
   DEFAULT_LOGIN_REDIRECT,
+  teacherRoute,
+  adminRoute,
 } from "@/routes";
+import { CurrentUserRole } from "./lib/current-user";
+import { NextResponse } from "next/server";
 
-export default auth((req) => {
+export default auth(async (req) => {
   const { nextUrl } = req;
   const isLogIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isTeacherRoute = nextUrl.pathname.startsWith(teacherRoute);
+  const isAdminRoute = nextUrl.pathname.startsWith(adminRoute);
 
   //   User allow to login or register API access
   if (isApiAuthRoute) {
@@ -25,7 +31,7 @@ export default auth((req) => {
   //   User allow to login or register page. If login redirect to default page
   if (isAuthRoute) {
     if (isLogIn) {
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
     return null;
   }
@@ -39,9 +45,25 @@ export default auth((req) => {
     }
     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
     // The route
-    return Response.redirect(
+    return NextResponse.redirect(
       new URL(`/signin?callbackUrl=${encodedCallbackUrl}`, nextUrl)
     );
+  }
+
+  const getRole = await CurrentUserRole();
+  //Allow only Teacher
+  if (isTeacherRoute) {
+    if (getRole === "USER") {
+      return NextResponse.redirect(new URL("/", nextUrl));
+    }
+    return null;
+  }
+  //Allow only Admin
+  if (isAdminRoute) {
+    if (getRole !== "ADMIN") {
+      return NextResponse.redirect(new URL("/", nextUrl));
+    }
+    return null;
   }
   return null;
 });

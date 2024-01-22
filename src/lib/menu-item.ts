@@ -1,4 +1,11 @@
-import { BarChart, Compass, Layout, List } from "lucide-react";
+import {
+  BarChart,
+  Compass,
+  FilePlus,
+  Layout,
+  List,
+  UserCheck,
+} from "lucide-react";
 
 export const userMenu = [
   {
@@ -23,5 +30,18 @@ export const teacherMenu = [
     icon: BarChart,
     label: "Analytics",
     href: "/teacher/analytics",
+  },
+];
+
+export const adminMenu = [
+  {
+    icon: UserCheck,
+    label: "Admin",
+    href: "/admin",
+  },
+  {
+    icon: FilePlus,
+    label: "Category",
+    href: "/admin/category",
   },
 ];

@@ -3,7 +3,7 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = ["/", "/verification", "/new-password"];
+export const publicRoutes = ["/", "/verification", "/new-password", "/search"];
 
 /**
  * An array of routes that are used for authentication
@@ -25,3 +25,17 @@ export const apiAuthPrefix = "/api/auth";
  * @type {string}
  */
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
+
+/**
+ * The Teacher Route
+ * @type {string}
+ */
+
+export const teacherRoute = "/teacher";
+
+/**
+ * The Admin Route
+ * @type {string}
+ */
+
+export const adminRoute = "/admin";

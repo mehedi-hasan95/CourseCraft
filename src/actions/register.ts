@@ -13,7 +13,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Something went wrong" };
   }
 
-  const { name, email, password } = validateForm.data;
+  const { name, email, role, password } = validateForm.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
@@ -26,6 +26,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     data: {
       name,
       email,
+      role,
       password: hashedPassword,
     },
   });

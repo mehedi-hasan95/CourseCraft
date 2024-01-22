@@ -16,6 +16,8 @@ import { LoginButton } from "@/components/auth/login-button";
 import { Button } from "@/components/ui/button";
 import { CurrentUser } from "@/lib/current-user";
 import { UserInfo } from "@/components/custom/user-info";
+import { ArrowRightLeft } from "lucide-react";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,13 +52,21 @@ export default async function RootLayout({
                       <SidebarRoutesMobile />
                     </div>
                     <Logo />
-                    {currentUser ? (
-                      <UserInfo />
-                    ) : (
-                      <LoginButton>
-                        <Button>Login</Button>
-                      </LoginButton>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {currentUser?.role !== "USER" && (
+                        <Button>
+                          <ArrowRightLeft className="h-4 w-4 mr-2" />
+                          <Link href="/teacher/courses">Teacher Mode</Link>
+                        </Button>
+                      )}
+                      {currentUser ? (
+                        <UserInfo />
+                      ) : (
+                        <LoginButton>
+                          <Button>Login</Button>
+                        </LoginButton>
+                      )}
+                    </div>
                   </div>
                   <Separator className="my-2" />
                 </div>
