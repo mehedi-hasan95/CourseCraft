@@ -7,6 +7,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Toaster } from "@/components/ui/sonner";
 import { Sidebar } from "@/components/common/sidebar";
 import { Logo } from "@/components/common/logo";
 import { SidebarRoutesMobile } from "@/components/common/sidebar-routes-mobile";
@@ -74,6 +75,7 @@ export default async function RootLayout({
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
+          <Toaster position="top-center" richColors />
         </body>
       </html>
     </AuthProvider>
