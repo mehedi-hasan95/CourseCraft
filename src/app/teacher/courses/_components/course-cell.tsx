@@ -8,20 +8,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CategoryColumns } from "./columns";
 import { Button } from "@/components/ui/button";
 import { Copy, Edit, MoreHorizontal, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import Link from "next/link";
-import { DeleteCategoryAction } from "@/actions/admin/create-category-action";
 import { useRouter } from "next/navigation";
+import { CourseColumns } from "./columns";
+import { DeleteCourseAction } from "@/actions/teacher/create-course-action";
 
 interface CellActionProps {
-  data: CategoryColumns;
+  data: CourseColumns;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+export const CourseCell: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
@@ -29,8 +29,8 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   };
   // Delete a category
   const onDelete = async (id: string) => {
-    await DeleteCategoryAction(id);
-    toast.success(`The Category delete successfully`);
+    await DeleteCourseAction(id);
+    toast.success(`The Course delete successfully`);
     router.refresh();
   };
   return (
@@ -52,7 +52,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           Copy Id
         </DropdownMenuItem>
         <DropdownMenuItem className={cn("cursor-pointer")} asChild>
-          <Link href={`/admin/category/${data.url}`} className="flex">
+          <Link href={`/teacher/courses/${data.id}`} className="flex">
             <Edit className="mr-2 h-4 w-4" />
             Update
           </Link>

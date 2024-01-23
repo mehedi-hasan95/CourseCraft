@@ -79,7 +79,7 @@ model Categories {
 model Course {
   id          String      @id @default(uuid())
   userId      String
-  title       String?
+  title       String
   description String?     @db.Text
   image       String?
   price       Float?

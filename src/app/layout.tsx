@@ -54,7 +54,7 @@ export default async function RootLayout({
                     </div>
                     <Logo />
                     <div className="flex items-center gap-2">
-                      {currentUser?.role !== "USER" && (
+                      {currentUser && currentUser?.role !== "USER" && (
                         <Button>
                           <ArrowRightLeft className="h-4 w-4 mr-2" />
                           <Link href="/teacher/courses">Teacher Mode</Link>

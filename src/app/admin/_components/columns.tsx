@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { CellAction } from "./cell-action";
+import { CategoryCell } from "./category-cell";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -38,6 +38,6 @@ export const columns: ColumnDef<CategoryColumns>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <CategoryCell data={row.original} />,
   },
 ];
