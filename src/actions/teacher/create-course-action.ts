@@ -33,7 +33,7 @@ export const CreateCourseAction = async (
     await prismaDb.course.create({
       data: collectedData,
     });
-    revalidatePath("teacher/courses");
+    revalidatePath("/teacher/courses");
     return { success: "Course Created Successfully" };
   } catch (error) {
     return { error: "Something went wrong" };
@@ -53,8 +53,34 @@ export const DeleteCourseAction = async (id: string) => {
         userId: currentUser?.id as string,
       },
     });
-    revalidatePath("teacher/courses");
+    revalidatePath("/teacher/courses");
     return { success: "Course Delete Successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};
+
+export const UpdateCourseAction = async (
+  values: z.infer<typeof CreateCourseSchema>,
+  id: string
+) => {
+  try {
+    const currentUser = await CurrentUser();
+    const currentUserRole = await CurrentUserRole();
+    if (!currentUser && currentUserRole !== "TEACHER") {
+      return { error: "You are not elegable to Update the course" };
+    }
+    await prismaDb.course.update({
+      where: {
+        id,
+        userId: currentUser?.id,
+      },
+      data: {
+        ...values,
+      },
+    });
+    revalidatePath("/teacher/courses");
+    return { success: "Course update successfully" };
   } catch (error) {
     return { error: "Something went wrong" };
   }

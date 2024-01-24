@@ -24,7 +24,10 @@ import {
 } from "@/components/ui/select";
 import { Categories, Course } from "@prisma/client";
 import { CreateCourseSchema } from "@/schema/teacher/course";
-import { CreateCourseAction } from "@/actions/teacher/create-course-action";
+import {
+  CreateCourseAction,
+  UpdateCourseAction,
+} from "@/actions/teacher/create-course-action";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -61,15 +64,24 @@ export const CreateCourseForm: React.FC<CreateCourseFormProps> = ({
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof CreateCourseSchema>) {
+    const id = initialData?.id;
     setError("");
     startTransition(() => {
-      CreateCourseAction(values).then((data) => {
-        setError(data?.error);
-        if (data.success) {
-          toast.success(data?.success);
-          router.push("/teacher/courses");
-        }
-      });
+      initialData
+        ? UpdateCourseAction(values, id as string).then((data) => {
+            setError(data?.error);
+            if (data.success) {
+              toast.success(data?.success);
+              router.push("/teacher/courses");
+            }
+          })
+        : CreateCourseAction(values).then((data) => {
+            setError(data?.error);
+            if (data.success) {
+              toast.success(data?.success);
+              router.push("/teacher/courses");
+            }
+          });
     });
   }
   return (
@@ -138,7 +150,12 @@ export const CreateCourseForm: React.FC<CreateCourseFormProps> = ({
                 <FormItem>
                   <FormLabel>Course Price</FormLabel>
                   <FormControl>
-                    <Input placeholder="10.00" {...field} />
+                    <Input
+                      type="number"
+                      min="0"
+                      placeholder="10.00"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

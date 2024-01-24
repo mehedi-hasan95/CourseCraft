@@ -16,22 +16,26 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CourseColumns } from "./columns";
 import { DeleteCourseAction } from "@/actions/teacher/create-course-action";
+import { useTransition } from "react";
 
 interface CellActionProps {
   data: CourseColumns;
 }
 
 export const CourseCell: React.FC<CellActionProps> = ({ data }) => {
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
     toast.success(`The copied id is ${id}`);
   };
   // Delete a category
-  const onDelete = async (id: string) => {
-    await DeleteCourseAction(id);
-    toast.success(`The Course delete successfully`);
-    router.refresh();
+  const onDelete = (id: string) => {
+    startTransition(async () => {
+      await DeleteCourseAction(id);
+      toast.success(`The Course delete successfully`);
+      router.refresh();
+    });
   };
   return (
     <DropdownMenu>
@@ -58,6 +62,7 @@ export const CourseCell: React.FC<CellActionProps> = ({ data }) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
+          disabled={isPending}
           className={cn("cursor-pointer")}
           onClick={() => onDelete(data.id)}
         >
